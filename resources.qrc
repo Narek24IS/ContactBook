@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resoruces/MacOS.qss</file>
+        <file>resoruces/contact_icon.png</file>
+        <file>resoruces/add.png</file>
+        <file>resoruces/cancel.png</file>
+        <file>resoruces/check.png</file>
+        <file>resoruces/down_arrow.png</file>
+        <file>resoruces/edit.png</file>
+        <file>resoruces/remove.png</file>
+    </qresource>
+</RCC>
