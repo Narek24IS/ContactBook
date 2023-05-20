@@ -10,6 +10,7 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -41,7 +42,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(441, 332);
+        MainWindow->resize(423, 332);
         MainWindow->setMinimumSize(QSize(0, 0));
         MainWindow->setMaximumSize(QSize(875, 500));
         centralwidget = new QWidget(MainWindow);
@@ -79,8 +80,15 @@ public:
 
         contactTableView = new QTableView(centralwidget);
         contactTableView->setObjectName("contactTableView");
-        contactTableView->setStyleSheet(QString::fromUtf8("font: 13pt \"Segoe UI\";"));
-        contactTableView->horizontalHeader()->setProperty("showSortIndicator", QVariant(false));
+        QFont font;
+        font.setPointSize(13);
+        contactTableView->setFont(font);
+        contactTableView->setStyleSheet(QString::fromUtf8(""));
+        contactTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        contactTableView->setAlternatingRowColors(false);
+        contactTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+        contactTableView->setSortingEnabled(true);
+        contactTableView->horizontalHeader()->setProperty("showSortIndicator", QVariant(true));
         contactTableView->horizontalHeader()->setStretchLastSection(true);
         contactTableView->verticalHeader()->setVisible(false);
 
@@ -89,7 +97,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 441, 26));
+        menubar->setGeometry(QRect(0, 0, 423, 26));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");
