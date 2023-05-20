@@ -114,7 +114,7 @@ public:
         contactTypeBox->setMinimumSize(QSize(150, 32));
         contactTypeBox->setBaseSize(QSize(0, 0));
         QFont font;
-        font.setPointSize(12);
+        font.setPointSize(11);
         contactTypeBox->setFont(font);
 
         verticalLayout_3->addWidget(contactTypeBox);
@@ -138,15 +138,26 @@ public:
         sizePolicy2.setHeightForWidth(saveButton->sizePolicy().hasHeightForWidth());
         saveButton->setSizePolicy(sizePolicy2);
         saveButton->setMinimumSize(QSize(0, 40));
+        QFont font1;
+        font1.setFamilies({QString::fromUtf8("Segoe UI")});
+        font1.setPointSize(22);
+        font1.setBold(false);
+        font1.setItalic(false);
+        saveButton->setFont(font1);
+        saveButton->setStyleSheet(QString::fromUtf8("font: 22pt \"Segoe UI\";"));
+        saveButton->setIconSize(QSize(25, 25));
 
         horizontalLayout->addWidget(saveButton);
-        
+
         closeButton = new QPushButton(EditDialog);
         closeButton->setObjectName("closeButton");
         sizePolicy2.setHeightForWidth(closeButton->sizePolicy().hasHeightForWidth());
         closeButton->setSizePolicy(sizePolicy2);
         closeButton->setMinimumSize(QSize(0, 40));
-        
+        closeButton->setFont(font1);
+        closeButton->setStyleSheet(QString::fromUtf8("font: 22pt \"Segoe UI\";"));
+        closeButton->setIconSize(QSize(25, 25));
+
         horizontalLayout->addWidget(closeButton);
 
 
@@ -154,6 +165,9 @@ public:
 
 
         retranslateUi(EditDialog);
+
+        saveButton->setDefault(true);
+
 
         QMetaObject::connectSlotsByName(EditDialog);
     } // setupUi

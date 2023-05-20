@@ -45,6 +45,9 @@ public:
         MainWindow->resize(423, 332);
         MainWindow->setMinimumSize(QSize(0, 0));
         MainWindow->setMaximumSize(QSize(875, 500));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/resoruces/images/title_ico.png"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName("centralwidget");
         verticalLayout = new QVBoxLayout(centralwidget);

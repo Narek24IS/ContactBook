@@ -6,8 +6,6 @@ EditDialog::EditDialog(QWidget *parent) :
     ui(new Ui::EditDialog)
 {
     ui->setupUi(this);
-    ui->saveButton->setIcon(QIcon(":/resoruces/check.png"));
-    ui->closeButton->setIcon(QIcon(":/resoruces/check.png"));
 }
 
 EditDialog::EditDialog(QList<QStandardItem *> data, QWidget *parent)
@@ -18,9 +16,6 @@ EditDialog::EditDialog(QList<QStandardItem *> data, QWidget *parent)
     ui->contactNameEdit->setText(data[1]->text());
     ui->contactNumberEdit->setText(data[2]->text());
     ui->contactTypeBox->setCurrentText(data[3]->text());
-
-    ui->saveButton->setIcon(QIcon(":/resoruces/check.png"));
-    ui->closeButton->setIcon(QIcon(":/resoruces/check.png"));
 }
 
 EditDialog::~EditDialog()
