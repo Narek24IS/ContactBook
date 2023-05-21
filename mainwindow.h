@@ -3,6 +3,8 @@
 
 #include <QFile>
 #include <QMainWindow>
+#include <QSqlDatabase>
+#include <QSqlQuery>
 #include <QStandardItemModel>
 #include <QTableView>
 #include "editdialog.h"
@@ -27,6 +29,9 @@ public:
     void initNewEditDialog(QList<QStandardItem *> data);
     void initNewAddDialog();
 
+    void dbConnect();
+    void refreshTable();
+
     void closeEvent(QCloseEvent *event);
     void saveDataToFile();
 private slots:
@@ -44,9 +49,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
     EditDialog *edit;
-    unsigned curId;
-    unsigned id = 0;
     QStandardItemModel *model;
     QString styleStr;
+    unsigned curId;
+    unsigned id = 0;
 };
 #endif // MAINWINDOW_H

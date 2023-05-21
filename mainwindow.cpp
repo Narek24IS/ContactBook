@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QSqlRecord>
 #include <QTableView>
 #include "editdialog.h"
 #include "ui_mainwindow.h"
@@ -8,9 +9,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    initTable();
     setIcons();
     setGlobalStyle();
+    dbConnect();
+    refreshTable();
+    initTable();
 }
 
 MainWindow::~MainWindow()
@@ -42,39 +45,64 @@ void MainWindow::resizeToContent()
     this->ui->contactTableView->horizontalHeader()->setSectionResizeMode(3, QHeaderView::Stretch);
 }
 
-void MainWindow::initTable()
+void MainWindow::dbConnect()
+{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setDatabaseName("phones");
+    db.setHostName("localhost");
+    db.setUserName("root");
+    db.setPassword("68ee3e138");
+    db.setPort(3306);
+    db.open();
+}
+
+void MainWindow::refreshTable()
 {
     model = new QStandardItemModel(this);
-    QString fileName = "tableData.dat";
-    QFile file(fileName);
-    if (file.open(QIODevice::ReadOnly)) {
-        QTextStream stream(&file);
-        int rows = 0;
-        int cols = 0;
-        if (!stream.atEnd()) {
-            this->id = stream.readLine().toInt();
-        }
-        if (!stream.atEnd()) {
-            rows = stream.readLine().toInt();
-        }
-        if (!stream.atEnd()) {
-            cols = stream.readLine().toInt();
-        }
-
-        model->setRowCount(rows);
-        model->setColumnCount(cols);
-        for (int row = 0; row < rows; ++row) {
-            for (int col = 0; col < cols; ++col) {
-                if (!stream.atEnd()) {
-                    QModelIndex index = model->index(row, col);
-                    QString data = stream.readLine();
-                    model->setData(index, data);
-                }
-            }
-        }
-        file.close();
-    }
     model->setHorizontalHeaderLabels({"Id", "Контакт", "Номер", "Тип номера"});
+    QSqlQuery query("SELECT * FROM contact");
+    int row = 0;
+    while (query.next()) {
+        qDebug() << "Ok";
+        QList<QStandardItem *> items;
+        for (int i = 0; i < query.record().count(); ++i) {
+            items << new QStandardItem(query.value(i).toString());
+        }
+        model->insertRow(row++, items);
+    }
+}
+
+void MainWindow::initTable()
+{
+    //    QString fileName = "tableData.dat";
+    //    QFile file(fileName);
+    //    if (file.open(QIODevice::ReadOnly)) {
+    //        QTextStream stream(&file);
+    //        int rows = 0;
+    //        int cols = 0;
+    //        if (!stream.atEnd()) {
+    //            this->id = stream.readLine().toInt();
+    //        }
+    //        if (!stream.atEnd()) {
+    //            rows = stream.readLine().toInt();
+    //        }
+    //        if (!stream.atEnd()) {
+    //            cols = stream.readLine().toInt();
+    //        }
+
+    //        model->setRowCount(rows);
+    //        model->setColumnCount(cols);
+    //        for (int row = 0; row < rows; ++row) {
+    //            for (int col = 0; col < cols; ++col) {
+    //                if (!stream.atEnd()) {
+    //                    QModelIndex index = model->index(row, col);
+    //                    QString data = stream.readLine();
+    //                    model->setData(index, data);
+    //                }
+    //            }
+    //        }
+    //        file.close();
+    //    }
     this->ui->contactTableView->setModel(model);
     this->ui->contactTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->ui->contactTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
