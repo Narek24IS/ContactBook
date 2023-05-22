@@ -144,12 +144,7 @@
        </item>
        <item>
         <property name="text">
-         <string>Офисный</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Специальный</string>
+         <string>Экстренные службы</string>
         </property>
        </item>
       </widget>

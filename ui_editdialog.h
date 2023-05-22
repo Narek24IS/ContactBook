@@ -104,7 +104,6 @@ public:
         contactTypeBox->addItem(QString());
         contactTypeBox->addItem(QString());
         contactTypeBox->addItem(QString());
-        contactTypeBox->addItem(QString());
         contactTypeBox->setObjectName("contactTypeBox");
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
@@ -180,8 +179,7 @@ public:
         contactTypeLabel->setText(QCoreApplication::translate("EditDialog", "\320\242\320\270\320\277", nullptr));
         contactTypeBox->setItemText(0, QCoreApplication::translate("EditDialog", "\320\234\320\276\320\261\320\270\320\273\321\214\320\275\321\213\320\271", nullptr));
         contactTypeBox->setItemText(1, QCoreApplication::translate("EditDialog", "\320\224\320\276\320\274\320\260\321\210\320\275\320\270\320\271", nullptr));
-        contactTypeBox->setItemText(2, QCoreApplication::translate("EditDialog", "\320\236\321\204\320\270\321\201\320\275\321\213\320\271", nullptr));
-        contactTypeBox->setItemText(3, QCoreApplication::translate("EditDialog", "\320\241\320\277\320\265\321\206\320\270\320\260\320\273\321\214\320\275\321\213\320\271", nullptr));
+        contactTypeBox->setItemText(2, QCoreApplication::translate("EditDialog", "\320\255\320\272\321\201\321\202\321\200\320\265\320\275\320\275\321\213\320\265 \321\201\320\273\321\203\320\266\320\261\321\213", nullptr));
 
         saveButton->setText(QCoreApplication::translate("EditDialog", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         closeButton->setText(QCoreApplication::translate("EditDialog", "\320\236\321\202\320\274\320\265\320\275\320\260", nullptr));

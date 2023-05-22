@@ -30,6 +30,8 @@ private slots:
 
     void on_closeButton_clicked();
 
+    void on_contactTypeBox_currentIndexChanged(int index);
+
 private:
     Ui::EditDialog *ui;
     int id = 0;

@@ -93,8 +93,6 @@ void MainWindow::setDataFromEditDialog(const QList<QString> &data)
     record.setValue("name", data[1]);
     record.setValue("number", data[2]);
     record.setValue("type", data[3]);
-    qDebug() << editRow;
-    qDebug() << model->setRecord(editRow, record);
     resizeToContent();
 }
 
@@ -150,25 +148,17 @@ void MainWindow::on_sortButton_clicked()
 {
     switch (sortedCol) {
         case 0:
-            {
-                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
-                break;
-            }
+            ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+            break;
         case 1:
-            {
-                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
-                break;
-            }
+            ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+            break;
         case 2:
-            {
-                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
-                break;
-            }
+            ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+            break;
         case 3:
-            {
-                sortedCol = 0;
-                ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
-                break;
-            }
+            sortedCol = 0;
+            ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
+            break;
     }
 }
