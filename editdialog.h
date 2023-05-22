@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QStandardItem>
+#include <QString>
 
 namespace Ui {
 class EditDialog;
@@ -14,7 +15,7 @@ class EditDialog : public QDialog
 
 public:
     explicit EditDialog(QWidget *parent = nullptr);
-    EditDialog(QList<QStandardItem *> data, QWidget *parent = nullptr);
+    EditDialog(QList<QString > data, QWidget *parent = nullptr);
     ~EditDialog();
 
     QString getContactName();
@@ -22,7 +23,7 @@ public:
     QString getContactType();
 
 signals:
-    void saveData(const QList<QStandardItem *> &data);
+    void saveData(const QList<QString > &data);
 
 private slots:
     void on_saveButton_clicked();
@@ -31,7 +32,7 @@ private slots:
 
 private:
     Ui::EditDialog *ui;
-    inline static int id = 0;
+    int id = 0;
 };
 
 #endif // EDITDIALOG_H

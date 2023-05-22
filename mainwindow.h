@@ -4,7 +4,7 @@
 #include <QFile>
 #include <QMainWindow>
 #include <QSqlDatabase>
-#include <QSqlQuery>
+#include <QSqlTableModel>
 #include <QStandardItemModel>
 #include <QTableView>
 #include "editdialog.h"
@@ -26,14 +26,13 @@ public:
     void resizeToContent();
 
     void initTable();
-    void initNewEditDialog(QList<QStandardItem *> data);
+    void initNewEditDialog(QList<QString> data);
     void initNewAddDialog();
 
     void dbConnect();
-    void refreshTable();
 
-    void closeEvent(QCloseEvent *event);
-    void saveDataToFile();
+    //    void closeEvent(QCloseEvent *event);
+
 private slots:
     void on_editButton_clicked();
 
@@ -43,15 +42,16 @@ private slots:
 
     void on_sortButton_clicked();
 
-    void setDataFromEditDialog(const QList<QStandardItem *> &data);
-    void setDataFromAddDialog(const QList<QStandardItem *> &data);
+    void setDataFromEditDialog(const QList<QString> &data);
+    void setDataFromAddDialog(const QList<QString> &data);
 
 private:
     Ui::MainWindow *ui;
     EditDialog *edit;
-    QStandardItemModel *model;
+    QSqlTableModel *model;
     QString styleStr;
-    unsigned curId;
     unsigned id = 0;
+    int editRow;
+    int sortedCol = 0;
 };
 #endif // MAINWINDOW_H

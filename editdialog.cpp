@@ -8,14 +8,15 @@ EditDialog::EditDialog(QWidget *parent) :
     ui->setupUi(this);
 }
 
-EditDialog::EditDialog(QList<QStandardItem *> data, QWidget *parent)
+EditDialog::EditDialog(QList<QString> data, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::EditDialog)
 {
     ui->setupUi(this);
-    ui->contactNameEdit->setText(data[1]->text());
-    ui->contactNumberEdit->setText(data[2]->text());
-    ui->contactTypeBox->setCurrentText(data[3]->text());
+    this->id = data[0].toInt();
+    ui->contactNameEdit->setText(data[1]);
+    ui->contactNumberEdit->setText(data[2]);
+    ui->contactTypeBox->setCurrentText(data[3]);
 }
 
 EditDialog::~EditDialog()
@@ -40,11 +41,11 @@ QString EditDialog::getContactType()
 
 void EditDialog::on_saveButton_clicked()
 {
-    QList<QStandardItem *> data;
-    data.append(new QStandardItem());
-    data.append(new QStandardItem(this->getContactName()));
-    data.append(new QStandardItem(this->getContactNumber()));
-    data.append(new QStandardItem(this->getContactType()));
+    QList<QString> data;
+    data.append(QString::number(this->id));
+    data.append(this->getContactName());
+    data.append(this->getContactNumber());
+    data.append(this->getContactType());
 
     emit saveData(data);
     this->close();

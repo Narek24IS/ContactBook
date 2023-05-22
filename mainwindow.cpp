@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QSqlField>
 #include <QSqlRecord>
 #include <QTableView>
 #include "editdialog.h"
@@ -12,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     setIcons();
     setGlobalStyle();
     dbConnect();
-    refreshTable();
     initTable();
 }
 
@@ -56,87 +56,30 @@ void MainWindow::dbConnect()
     db.open();
 }
 
-void MainWindow::refreshTable()
-{
-    model = new QStandardItemModel(this);
-    model->setHorizontalHeaderLabels({"Id", "Контакт", "Номер", "Тип номера"});
-    QSqlQuery query("SELECT * FROM contact");
-    int row = 0;
-    while (query.next()) {
-        qDebug() << "Ok";
-        QList<QStandardItem *> items;
-        for (int i = 0; i < query.record().count(); ++i) {
-            items << new QStandardItem(query.value(i).toString());
-        }
-        model->insertRow(row++, items);
-    }
-}
-
 void MainWindow::initTable()
 {
-    //    QString fileName = "tableData.dat";
-    //    QFile file(fileName);
-    //    if (file.open(QIODevice::ReadOnly)) {
-    //        QTextStream stream(&file);
-    //        int rows = 0;
-    //        int cols = 0;
-    //        if (!stream.atEnd()) {
-    //            this->id = stream.readLine().toInt();
-    //        }
-    //        if (!stream.atEnd()) {
-    //            rows = stream.readLine().toInt();
-    //        }
-    //        if (!stream.atEnd()) {
-    //            cols = stream.readLine().toInt();
-    //        }
-
-    //        model->setRowCount(rows);
-    //        model->setColumnCount(cols);
-    //        for (int row = 0; row < rows; ++row) {
-    //            for (int col = 0; col < cols; ++col) {
-    //                if (!stream.atEnd()) {
-    //                    QModelIndex index = model->index(row, col);
-    //                    QString data = stream.readLine();
-    //                    model->setData(index, data);
-    //                }
-    //            }
-    //        }
-    //        file.close();
-    //    }
+    model = new QSqlTableModel(this);
+    model->setTable("contact");
+    model->setEditStrategy(QSqlTableModel::OnFieldChange);
+    model->setHeaderData(0, Qt::Horizontal, "ID");
+    model->setHeaderData(1, Qt::Horizontal, "Name");
+    model->setHeaderData(2, Qt::Horizontal, "Number");
+    model->setHeaderData(3, Qt::Horizontal, "Type");
+    model->select();
     this->ui->contactTableView->setModel(model);
+    this->ui->contactTableView->setSortingEnabled(true);
+    this->ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
     this->ui->contactTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->ui->contactTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     resizeToContent();
 }
 
-void MainWindow::saveDataToFile()
-{
-    QString fileName = "tableData.dat";
-    QFile file(fileName);
-    if (file.open(QIODevice::WriteOnly)) {
-        QTextStream stream(&file);
-        unsigned lastId = this->id;
-        int rows = model->rowCount();
-        int cols = model->columnCount();
-        stream << lastId << "\n" << rows << "\n" << cols << "\n";
-        for (int row = 0; row < rows; ++row) {
-            for (int col = 0; col < cols; ++col) {
-                QModelIndex index = model->index(row, col);
-                QString data = model->data(index).toString();
-                stream << data << "\n";
-            }
-        }
-        file.close();
-    }
-}
+//void MainWindow::closeEvent(QCloseEvent *event)
+//{
+//    QMainWindow::closeEvent(event);
+//}
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
-    saveDataToFile();
-    QMainWindow::closeEvent(event);
-}
-
-void MainWindow::initNewEditDialog(QList<QStandardItem *> data)
+void MainWindow::initNewEditDialog(QList<QString> data)
 {
     edit = new EditDialog(data, this);
     edit->setStyleSheet(styleStr);
@@ -144,30 +87,30 @@ void MainWindow::initNewEditDialog(QList<QStandardItem *> data)
     edit->exec();
 }
 
-void MainWindow::setDataFromEditDialog(const QList<QStandardItem *> &data)
+void MainWindow::setDataFromEditDialog(const QList<QString> &data)
 {
-    for (int col = 1; col < model->columnCount(); ++col) {
-        QModelIndex index = model->index(curId - 1, col);
-        QVariant cellData = data[col]->text();
-        model->setData(index, cellData);
-    }
-    model->setItem(curId - 1, 0, new QStandardItem(QString::number(curId)));
+    QSqlRecord record = model->record(editRow);
+    record.setValue("name", data[1]);
+    record.setValue("number", data[2]);
+    record.setValue("type", data[3]);
+    qDebug() << editRow;
+    qDebug() << model->setRecord(editRow, record);
     resizeToContent();
 }
 
 void MainWindow::on_editButton_clicked()
 {
-    int row = this->ui->contactTableView->currentIndex().row();
-    if (row != -1) {
-        QList<QStandardItem *> data;
+    editRow = this->ui->contactTableView->currentIndex().row();
+    if (editRow != -1) {
+        QList<QString> data;
         for (int col = 0; col < model->columnCount(); ++col) {
-            QModelIndex index = model->index(row, col);
+            QModelIndex index = model->index(editRow, col);
             QString cellData = model->data(index).toString();
-            data.append(new QStandardItem(cellData));
+            data.append(cellData);
         }
-        curId = data[0]->text().toUInt();
         initNewEditDialog(data);
     }
+    resizeToContent();
 }
 
 void MainWindow::initNewAddDialog()
@@ -178,16 +121,21 @@ void MainWindow::initNewAddDialog()
     edit->exec();
 }
 
-void MainWindow::setDataFromAddDialog(const QList<QStandardItem *> &data)
+void MainWindow::setDataFromAddDialog(const QList<QString> &data)
 {
-    model->appendRow(data);
-    model->setItem(model->rowCount() - 1, 0, new QStandardItem(QString::number(id)));
+    QSqlRecord record;
+    record.append(QSqlField("name", QMetaType()));
+    record.append(QSqlField("number", QMetaType()));
+    record.append(QSqlField("type", QMetaType()));
+    record.setValue("name", data[1]);
+    record.setValue("number", data[2]);
+    record.setValue("type", data[3]);
+    model->insertRecord(-1, record);
     resizeToContent();
 }
 
 void MainWindow::on_addButton_clicked()
 {
-    id++;
     initNewAddDialog();
 }
 
@@ -195,17 +143,32 @@ void MainWindow::on_removeButton_clicked()
 {
     int row = this->ui->contactTableView->currentIndex().row();
     model->removeRow(row);
+    ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
 }
 
 void MainWindow::on_sortButton_clicked()
 {
-    this->ui->contactTableView->setSortingEnabled(true);
-    if (ui->contactTableView->horizontalHeader()->isSortIndicatorClearable()) {
-        ui->contactTableView->horizontalHeader()->setSortIndicatorClearable(false);
-        ui->contactTableView->horizontalHeader()->setSortIndicator(1, Qt::AscendingOrder);
-    } else {
-        ui->contactTableView->horizontalHeader()->setSortIndicatorClearable(true);
-        ui->contactTableView->horizontalHeader()->setSortIndicator(0, Qt::AscendingOrder);
+    switch (sortedCol) {
+        case 0:
+            {
+                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+                break;
+            }
+        case 1:
+            {
+                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+                break;
+            }
+        case 2:
+            {
+                ui->contactTableView->sortByColumn(++sortedCol, Qt::AscendingOrder);
+                break;
+            }
+        case 3:
+            {
+                sortedCol = 0;
+                ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
+                break;
+            }
     }
-    this->ui->contactTableView->setSortingEnabled(false);
 }

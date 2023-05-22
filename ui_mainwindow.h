@@ -86,13 +86,6 @@ public:
         QFont font;
         font.setPointSize(13);
         contactTableView->setFont(font);
-        contactTableView->setStyleSheet(QString::fromUtf8(""));
-        contactTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        contactTableView->setAlternatingRowColors(false);
-        contactTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-        contactTableView->setSortingEnabled(true);
-        contactTableView->horizontalHeader()->setProperty("showSortIndicator", QVariant(true));
-        contactTableView->horizontalHeader()->setStretchLastSection(true);
         contactTableView->verticalHeader()->setVisible(false);
 
         verticalLayout->addWidget(contactTableView);
