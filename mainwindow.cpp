@@ -74,11 +74,6 @@ void MainWindow::initTable()
     resizeToContent();
 }
 
-//void MainWindow::closeEvent(QCloseEvent *event)
-//{
-//    QMainWindow::closeEvent(event);
-//}
-
 void MainWindow::initNewEditDialog(QList<QString> data)
 {
     edit = new EditDialog(data, this);
@@ -90,9 +85,18 @@ void MainWindow::initNewEditDialog(QList<QString> data)
 void MainWindow::setDataFromEditDialog(const QList<QString> &data)
 {
     QSqlRecord record = model->record(editRow);
+    qDebug() << record.value(0);
+    qDebug() << record.value(1);
+    qDebug() << record.value(2);
+    qDebug() << record.value(3);
     record.setValue("name", data[1]);
     record.setValue("number", data[2]);
     record.setValue("type", data[3]);
+    qDebug() << record.value(0);
+    qDebug() << record.value(1);
+    qDebug() << record.value(2);
+    qDebug() << record.value(3);
+    qDebug() << model->setRecord(editRow, record);
     resizeToContent();
 }
 
