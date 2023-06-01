@@ -8,5 +8,6 @@
         <file>resoruces/down_arrow.png</file>
         <file>resoruces/edit.png</file>
         <file>resoruces/remove.png</file>
+        <file>resoruces/std_standart_icon.png</file>
     </qresource>
 </RCC>

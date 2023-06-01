@@ -42,8 +42,8 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName("MainWindow");
-        MainWindow->resize(423, 332);
-        MainWindow->setMinimumSize(QSize(0, 0));
+        MainWindow->resize(600, 332);
+        MainWindow->setMinimumSize(QSize(600, 0));
         MainWindow->setMaximumSize(QSize(875, 500));
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/resoruces/images/title_ico.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -84,7 +84,7 @@ public:
         contactTableView = new QTableView(centralwidget);
         contactTableView->setObjectName("contactTableView");
         QFont font;
-        font.setPointSize(13);
+        font.setPointSize(15);
         contactTableView->setFont(font);
         contactTableView->verticalHeader()->setVisible(false);
 
@@ -93,7 +93,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 423, 26));
+        menubar->setGeometry(QRect(0, 0, 600, 25));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName("statusbar");

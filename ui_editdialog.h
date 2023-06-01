@@ -25,16 +25,22 @@ QT_BEGIN_NAMESPACE
 class Ui_EditDialog
 {
 public:
-    QVBoxLayout *verticalLayout_4;
+    QVBoxLayout *verticalLayout_5;
     QVBoxLayout *verticalLayout;
     QLabel *contactNameLabel;
     QLineEdit *contactNameEdit;
     QVBoxLayout *verticalLayout_2;
     QLabel *contactNumberLabel;
     QLineEdit *contactNumberEdit;
+    QHBoxLayout *horizontalLayout_2;
+    QVBoxLayout *verticalLayout_4;
     QVBoxLayout *verticalLayout_3;
     QLabel *contactTypeLabel;
     QComboBox *contactTypeBox;
+    QPushButton *getFileButton;
+    QSpacerItem *horizontalSpacer;
+    QLabel *imageLabel;
+    QSpacerItem *horizontalSpacer_2;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout;
     QPushButton *saveButton;
@@ -44,13 +50,13 @@ public:
     {
         if (EditDialog->objectName().isEmpty())
             EditDialog->setObjectName("EditDialog");
-        EditDialog->resize(500, 280);
-        EditDialog->setMinimumSize(QSize(500, 280));
-        EditDialog->setMaximumSize(QSize(500, 280));
+        EditDialog->resize(500, 350);
+        EditDialog->setMinimumSize(QSize(500, 350));
+        EditDialog->setMaximumSize(QSize(500, 350));
         EditDialog->setBaseSize(QSize(500, 280));
         EditDialog->setSizeGripEnabled(false);
-        verticalLayout_4 = new QVBoxLayout(EditDialog);
-        verticalLayout_4->setObjectName("verticalLayout_4");
+        verticalLayout_5 = new QVBoxLayout(EditDialog);
+        verticalLayout_5->setObjectName("verticalLayout_5");
         verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(3);
         verticalLayout->setObjectName("verticalLayout");
@@ -71,10 +77,9 @@ public:
         verticalLayout->addWidget(contactNameEdit);
 
 
-        verticalLayout_4->addLayout(verticalLayout);
+        verticalLayout_5->addLayout(verticalLayout);
 
         verticalLayout_2 = new QVBoxLayout();
-        verticalLayout_2->setSpacing(3);
         verticalLayout_2->setObjectName("verticalLayout_2");
         contactNumberLabel = new QLabel(EditDialog);
         contactNumberLabel->setObjectName("contactNumberLabel");
@@ -90,8 +95,13 @@ public:
         verticalLayout_2->addWidget(contactNumberEdit);
 
 
-        verticalLayout_4->addLayout(verticalLayout_2);
+        verticalLayout_5->addLayout(verticalLayout_2);
 
+        horizontalLayout_2 = new QHBoxLayout();
+        horizontalLayout_2->setSpacing(50);
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        verticalLayout_4 = new QVBoxLayout();
+        verticalLayout_4->setObjectName("verticalLayout_4");
         verticalLayout_3 = new QVBoxLayout();
         verticalLayout_3->setSpacing(3);
         verticalLayout_3->setObjectName("verticalLayout_3");
@@ -121,9 +131,41 @@ public:
 
         verticalLayout_4->addLayout(verticalLayout_3);
 
+        getFileButton = new QPushButton(EditDialog);
+        getFileButton->setObjectName("getFileButton");
+        sizePolicy1.setHeightForWidth(getFileButton->sizePolicy().hasHeightForWidth());
+        getFileButton->setSizePolicy(sizePolicy1);
+        getFileButton->setMinimumSize(QSize(170, 35));
+
+        verticalLayout_4->addWidget(getFileButton);
+
+
+        horizontalLayout_2->addLayout(verticalLayout_4);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer);
+
+        imageLabel = new QLabel(EditDialog);
+        imageLabel->setObjectName("imageLabel");
+        imageLabel->setMinimumSize(QSize(100, 100));
+        imageLabel->setMaximumSize(QSize(100, 100));
+        imageLabel->setPixmap(QPixmap(QString::fromUtf8(":/resoruces/std_standart_icon.png")));
+
+        horizontalLayout_2->addWidget(imageLabel);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_2->addItem(horizontalSpacer_2);
+
+        horizontalLayout_2->setStretch(0, 5);
+        horizontalLayout_2->setStretch(2, 8);
+
+        verticalLayout_5->addLayout(horizontalLayout_2);
+
         verticalSpacer = new QSpacerItem(287, 15, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_4->addItem(verticalSpacer);
+        verticalLayout_5->addItem(verticalSpacer);
 
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(10);
@@ -160,7 +202,7 @@ public:
         horizontalLayout->addWidget(closeButton);
 
 
-        verticalLayout_4->addLayout(horizontalLayout);
+        verticalLayout_5->addLayout(horizontalLayout);
 
 
         retranslateUi(EditDialog);
@@ -181,6 +223,8 @@ public:
         contactTypeBox->setItemText(1, QCoreApplication::translate("EditDialog", "\320\224\320\276\320\274\320\260\321\210\320\275\320\270\320\271", nullptr));
         contactTypeBox->setItemText(2, QCoreApplication::translate("EditDialog", "\320\255\320\272\321\201\321\202\321\200\320\265\320\275\320\275\321\213\320\265 \321\201\320\273\321\203\320\266\320\261\321\213", nullptr));
 
+        getFileButton->setText(QCoreApplication::translate("EditDialog", "\320\222\321\213\320\261\320\265\321\200\320\270\321\202\320\265 \321\204\320\276\321\202\320\276\320\263\321\200\320\260\321\204\320\270\321\216", nullptr));
+        imageLabel->setText(QString());
         saveButton->setText(QCoreApplication::translate("EditDialog", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", nullptr));
         closeButton->setText(QCoreApplication::translate("EditDialog", "\320\236\321\202\320\274\320\265\320\275\320\260", nullptr));
     } // retranslateUi

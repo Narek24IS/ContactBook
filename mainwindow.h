@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QBuffer>
 #include <QFile>
 #include <QMainWindow>
 #include <QSqlDatabase>
@@ -26,8 +27,9 @@ public:
     void resizeToContent();
 
     void initTable();
-    void initNewEditDialog(QList<QString> data);
+    void initNewEditDialog(QList<QString> data, QByteArray imageData);
     void initNewAddDialog();
+    QByteArray takeImageData(QString path);
 
     void dbConnect();
 
@@ -40,8 +42,8 @@ private slots:
 
     void on_sortButton_clicked();
 
-    void setDataFromEditDialog(const QList<QString> &data);
-    void setDataFromAddDialog(const QList<QString> &data);
+    void setDataFromEditDialog(const QList<QString> &data, QByteArray imageData);
+    void setDataFromAddDialog(const QList<QString> &data, QByteArray imageData);
 
 private:
     Ui::MainWindow *ui;

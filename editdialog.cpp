@@ -1,4 +1,6 @@
 #include "editdialog.h"
+#include <QBuffer>
+#include <QFileDialog>
 #include "ui_editdialog.h"
 
 EditDialog::EditDialog(QWidget *parent) :
@@ -10,7 +12,7 @@ EditDialog::EditDialog(QWidget *parent) :
     ui->contactNumberEdit->setInputMask("+7(999)999-99-99");
 }
 
-EditDialog::EditDialog(QList<QString> data, QWidget *parent)
+EditDialog::EditDialog(QList<QString> data, QByteArray imageBytes, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::EditDialog)
 {
@@ -21,6 +23,11 @@ EditDialog::EditDialog(QList<QString> data, QWidget *parent)
     ui->contactNameEdit->setText(data[1]);
     ui->contactNumberEdit->setText(data[2]);
     ui->contactTypeBox->setCurrentText(data[3]);
+    imageData = imageBytes;
+    qDebug() << imageData;
+    QImage image = QImage::fromData(imageData);
+    imagePixmap = QPixmap::fromImage(image).scaled(QSize(100, 100));
+    ui->imageLabel->setPixmap(imagePixmap);
     connect(ui->contactTypeBox,
             &QComboBox::currentIndexChanged,
             this,
@@ -47,6 +54,11 @@ QString EditDialog::getContactType()
     return this->ui->contactTypeBox->currentText();
 }
 
+QPixmap EditDialog::getImagePixmap()
+{
+    return imagePixmap;
+}
+
 void EditDialog::on_saveButton_clicked()
 {
     QList<QString> data;
@@ -54,8 +66,8 @@ void EditDialog::on_saveButton_clicked()
     data.append(this->getContactName());
     data.append(this->getContactNumber());
     data.append(this->getContactType());
-
-    emit saveData(data);
+    qDebug() << imageData;
+    emit saveData(data, imageData);
     this->close();
 }
 
@@ -82,4 +94,19 @@ void EditDialog::on_contactTypeBox_currentIndexChanged(int index)
         default:
             break;
     }
+}
+
+void EditDialog::on_getFileButton_clicked()
+{
+    imagePath = QFileDialog::getOpenFileName(this,
+                                             tr("Выберите файл"),
+                                             "",
+                                             tr("Image Files (*.png *.jpg *.bmp)"));
+    QImage image = QImage(imagePath);
+    QBuffer buffer(&imageData);
+    image = image.scaled(QSize(100, 100));
+    buffer.open(QIODevice::WriteOnly);
+    image.save(&buffer, "PNG");
+    imagePixmap = QPixmap::fromImage(image).scaled(QSize(100, 100));
+    ui->imageLabel->setPixmap(imagePixmap);
 }

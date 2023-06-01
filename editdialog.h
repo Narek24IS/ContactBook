@@ -1,6 +1,7 @@
 #ifndef EDITDIALOG_H
 #define EDITDIALOG_H
 
+#include <QByteArray>
 #include <QDialog>
 #include <QStandardItem>
 #include <QString>
@@ -15,15 +16,16 @@ class EditDialog : public QDialog
 
 public:
     explicit EditDialog(QWidget *parent = nullptr);
-    EditDialog(QList<QString > data, QWidget *parent = nullptr);
+    EditDialog(QList<QString> data, QByteArray imageBytes, QWidget *parent = nullptr);
     ~EditDialog();
 
     QString getContactName();
     QString getContactNumber();
     QString getContactType();
+    QPixmap getImagePixmap();
 
 signals:
-    void saveData(const QList<QString > &data);
+    void saveData(const QList<QString> &data, QByteArray imageData);
 
 private slots:
     void on_saveButton_clicked();
@@ -32,8 +34,13 @@ private slots:
 
     void on_contactTypeBox_currentIndexChanged(int index);
 
+    void on_getFileButton_clicked();
+
 private:
     Ui::EditDialog *ui;
+    QString imagePath;
+    QPixmap imagePixmap;
+    QByteArray imageData;
     int id = 0;
 };
 

@@ -65,7 +65,15 @@ void MainWindow::initTable()
     model->setHeaderData(1, Qt::Horizontal, "Name");
     model->setHeaderData(2, Qt::Horizontal, "Number");
     model->setHeaderData(3, Qt::Horizontal, "Type");
+    model->setHeaderData(4, Qt::Horizontal, "Image");
     model->select();
+    for (int row = 0; row < 5; ++row) {
+        QSqlRecord record = model->record(row);
+        QByteArray DBimg = record.value(4).toByteArray();
+        qDebug() << record.value(4).toByteArray();
+        QPixmap pixmap = QPixmap::fromImage(QImage::fromData(DBimg));
+        model->setData(model->index(editRow, 4), pixmap);
+    }
     this->ui->contactTableView->setModel(model);
     this->ui->contactTableView->setSortingEnabled(true);
     this->ui->contactTableView->sortByColumn(sortedCol, Qt::AscendingOrder);
@@ -74,29 +82,22 @@ void MainWindow::initTable()
     resizeToContent();
 }
 
-void MainWindow::initNewEditDialog(QList<QString> data)
+void MainWindow::initNewEditDialog(QList<QString> data, QByteArray imageData)
 {
-    edit = new EditDialog(data, this);
+    edit = new EditDialog(data, imageData, this);
     edit->setStyleSheet(styleStr);
     connect(edit, &EditDialog::saveData, this, &MainWindow::setDataFromEditDialog);
     edit->exec();
 }
 
-void MainWindow::setDataFromEditDialog(const QList<QString> &data)
+void MainWindow::setDataFromEditDialog(const QList<QString> &data, QByteArray imageData)
 {
     QSqlRecord record = model->record(editRow);
-    qDebug() << record.value(0);
-    qDebug() << record.value(1);
-    qDebug() << record.value(2);
-    qDebug() << record.value(3);
     record.setValue("name", data[1]);
     record.setValue("number", data[2]);
     record.setValue("type", data[3]);
-    qDebug() << record.value(0);
-    qDebug() << record.value(1);
-    qDebug() << record.value(2);
-    qDebug() << record.value(3);
-    qDebug() << model->setRecord(editRow, record);
+    record.setValue("image", imageData);
+    model->setData(model->index(editRow, 4), QPixmap::fromImage(QImage::fromData(imageData)));
     resizeToContent();
 }
 
@@ -105,12 +106,14 @@ void MainWindow::on_editButton_clicked()
     editRow = this->ui->contactTableView->currentIndex().row();
     if (editRow != -1) {
         QList<QString> data;
-        for (int col = 0; col < model->columnCount(); ++col) {
+        for (int col = 0; col < 4; ++col) {
             QModelIndex index = model->index(editRow, col);
             QString cellData = model->data(index).toString();
             data.append(cellData);
         }
-        initNewEditDialog(data);
+        QModelIndex index = model->index(editRow, 4);
+        QByteArray imageData = model->data(index).toByteArray();
+        initNewEditDialog(data, imageData);
     }
     resizeToContent();
 }
@@ -123,16 +126,19 @@ void MainWindow::initNewAddDialog()
     edit->exec();
 }
 
-void MainWindow::setDataFromAddDialog(const QList<QString> &data)
+void MainWindow::setDataFromAddDialog(const QList<QString> &data, QByteArray imageData)
 {
     QSqlRecord record;
     record.append(QSqlField("name", QMetaType()));
     record.append(QSqlField("number", QMetaType()));
     record.append(QSqlField("type", QMetaType()));
+    record.append(QSqlField("image", QMetaType()));
     record.setValue("name", data[1]);
     record.setValue("number", data[2]);
     record.setValue("type", data[3]);
+    record.setValue("image", imageData);
     model->insertRecord(-1, record);
+    model->setData(model->index(-1, 4), QPixmap::fromImage(QImage::fromData(imageData)));
     resizeToContent();
 }
 
