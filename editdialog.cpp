@@ -24,7 +24,7 @@ EditDialog::EditDialog(QList<QString> data, QByteArray imageBytes, QWidget *pare
     ui->contactNumberEdit->setText(data[2]);
     ui->contactTypeBox->setCurrentText(data[3]);
     imageData = imageBytes;
-    qDebug() << imageData;
+    //    qDebug() << imageData;
     QImage image = QImage::fromData(imageData);
     imagePixmap = QPixmap::fromImage(image).scaled(QSize(100, 100));
     ui->imageLabel->setPixmap(imagePixmap);
@@ -66,7 +66,7 @@ void EditDialog::on_saveButton_clicked()
     data.append(this->getContactName());
     data.append(this->getContactNumber());
     data.append(this->getContactType());
-    qDebug() << imageData;
+    //    qDebug() << imageData;
     emit saveData(data, imageData);
     this->close();
 }

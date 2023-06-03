@@ -70,7 +70,7 @@ void MainWindow::initTable()
     for (int row = 0; row < 5; ++row) {
         QSqlRecord record = model->record(row);
         QByteArray DBimg = record.value(4).toByteArray();
-        qDebug() << record.value(4).toByteArray();
+        //        qDebug() << record.value(4).toByteArray();
         QPixmap pixmap = QPixmap::fromImage(QImage::fromData(DBimg));
         model->setData(model->index(editRow, 4), pixmap);
     }
@@ -98,6 +98,7 @@ void MainWindow::setDataFromEditDialog(const QList<QString> &data, QByteArray im
     record.setValue("type", data[3]);
     record.setValue("image", imageData);
     model->setData(model->index(editRow, 4), QPixmap::fromImage(QImage::fromData(imageData)));
+    model->setRecord(editRow, record);
     resizeToContent();
 }
 
